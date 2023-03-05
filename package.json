@@ -1,0 +1,29 @@
+{
+  "type": "commonjs",
+  "dependencies": {
+    "kafkajs": "^2.2.4",
+    "nodemon": "^2.0.21",
+    "random-mobile": "^1.0.2",
+    "randomstring": "^1.2.3",
+    "uuid": "^9.0.0"
+  },
+  "name": "data-pipeline8",
+  "description": "This is a sample code showing how to realize the following data pipeline:",
+  "version": "1.0.0",
+  "main": "kafka_producer.js",
+  "scripts": {
+    "start": "nodemon kafka_producer.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liu-xiao-guo/data-pipeline8.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/liu-xiao-guo/data-pipeline8/issues"
+  },
+  "homepage": "https://github.com/liu-xiao-guo/data-pipeline8#readme"
+}

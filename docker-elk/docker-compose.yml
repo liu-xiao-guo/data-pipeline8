@@ -1,48 +1,51 @@
-version: '3.7'
+version: "3.9"
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_STACK_VERSION}
-    container_name: es
+    image: elasticsearch:${ELASTIC_STACK_VERSION}
+    container_name: elasticsearch
     environment:
       - discovery.type=single-node
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      - xpack.security.enabled=false
     volumes:
-      - esdata01:/usr/share/elasticsearch/data        
+      - type: volume
+        source: es_data
+        target: /usr/share/elasticsearch/data
     ports:
-      - 9200:9200
+      - target: 9200
+        published: 9200
     networks:
       - elastic
- 
+
   kibana:
-    image: docker.elastic.co/kibana/kibana:${ELASTIC_STACK_VERSION}
+    image: kibana:${ELASTIC_STACK_VERSION}
     container_name: kibana
-    ports: ['5601:5601']    
-    networks: ['elastic']
-    environment:
-      - SERVER_NAME=kibana.localhost
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-      - I18N_LOCALE=zh-CN
-    depends_on: ['elasticsearch']
+    ports:
+      - target: 5601
+        published: 5601
+    depends_on:
+      - elasticsearch
+    networks:
+      - elastic   
 
   logstash:
     image: logstash:${ELASTIC_STACK_VERSION}
+    container_name: logstash
     ports:
-      - 5000:5000
+      - 5200:5200
     volumes: 
       - type: bind
         source: ./logstash_pipeline/
         target: /usr/share/logstash/pipeline
         read_only: true
     networks:
-      - elastic        
- 
+      - elastic           
+
 volumes:
-  esdata01:
+  es_data:
     driver: local
- 
+
 networks:
   elastic:
+    name: elastic
     driver: bridge
